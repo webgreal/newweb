@@ -1,0 +1,6 @@
+{
+  "name": "Webgreal",
+  "description": "Modern premium landing page for Webgreal - An international web design and digital marketing agency.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
