@@ -4,6 +4,7 @@ import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/app/lib/supabase";
+import { redirectAfterAuth } from "@/app/lib/redirect-after-auth";
 
 type DomainType = "existing" | "new";
 
@@ -68,8 +69,7 @@ export default function SignupPage() {
       return;
     }
 
-    router.push("/hosting");
-    router.refresh();
+    await redirectAfterAuth(router);
   }
 
   return (

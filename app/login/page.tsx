@@ -4,6 +4,7 @@ import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/app/lib/supabase";
+import { redirectAfterAuth } from "@/app/lib/redirect-after-auth";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -33,8 +34,7 @@ export default function LoginPage() {
       return;
     }
 
-    router.push("/dashboard");
-    router.refresh();
+    await redirectAfterAuth(router);
   }
 
   return (

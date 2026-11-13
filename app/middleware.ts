@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { computeOnboardingState, EXIT_COOKIE } from "@/app/lib/onboarding";
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
@@ -41,9 +42,31 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (path === "/dashboard" && user) {
-    // admin check happens in the page itself (needs profiles table)
+  if (path === "/hosting" && user) {
+    let hasActive = false;
+    try {
+      const { data } = await supabase.rpc("get_my_subscription");
+      const row = Array.isArray(data) ? data[0] : data;
+      hasActive = !!row?.status && ["active", "trialing", "past_due"].includes(row.status);
+    } catch {
+      hasActive = false;
+    }
+
+    const state = computeOnboardingState({
+      hasActiveSubscription: hasActive,
+      exitCookieValue: request.cookies.get(EXIT_COOKIE)?.value,
+    });
+
+    if (state === "has_plan") {
+      const url = request.nextUrl.clone();
+      url.pathname = "/dashboard";
+      return NextResponse.redirect(url);
+    }
   }
 
   return supabaseResponse;
 }
+
+export const config = {
+  matcher: ["/dashboard/:path*", "/admin/:path*", "/hosting"],
+};
