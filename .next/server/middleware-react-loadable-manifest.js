@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{}"
+self.__REACT_LOADABLE_MANIFEST="{\"app/lib/redirect-after-auth.ts -> @/app/lib/checkout\":{\"id\":\"app/lib/redirect-after-auth.ts -> @/app/lib/checkout\",\"files\":[\"static/chunks/_app-pages-browser_app_lib_checkout_ts.js\"]}}"
